@@ -6,7 +6,9 @@ ometa kssDivider {
 
   blockEnd = kssMarkup | end,
 
-  block = kssMarkup (~blockEnd char)*:x -> [#block, x.join('')],
+  nl = seq('\n\n'),
+
+  block = kssMarkup:k (~blockEnd char)*:c blockEnd -> [k, [#code, c.join('')]],
 
   any = (block)*
 
