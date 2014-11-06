@@ -9,7 +9,7 @@ ometa kssDivider {
 
   kssMarkup = inlineComment*:k -> [#kss, k.join('')],
 
-  block = kssMarkup:k lineEnd -> [#block, k],
+  block = kssMarkup:k lineEnd* -> [#block, k],
 
   any = (block)*
 
