@@ -5,11 +5,15 @@ ometa kssDivider {
   lineEnd = lineBreak | end,
   blockEnd = end | doubleLineBreak,
 
-  inlineComment = seq('//') (~lineEnd char)*:x lineEnd -> x.join(''),
+  inlineComment = seq('//') (~lineEnd char)*,
 
-  kssMarkup = inlineComment*:k -> [#kss, k.join('')],
+  kssMarkup = (inlineComment lineEnd)*:k -> [#kss, k.join('')],
 
-  block = kssMarkup:k lineEnd* -> [#block, k],
+  codeLine = (~inlineComment ~lineEnd char)*,
+
+  code = (codeLine lineEnd)*:c -> [#code, c.join('')],
+
+  block = kssMarkup:k lineEnd* code:c -> [#block, k, c],
 
   any = (block)*
 
