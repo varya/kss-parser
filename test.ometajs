@@ -1,0 +1,13 @@
+ometa kssDivider {
+
+  inlineComment = seq('//') (~seq('\n\n') char)*:x seq('\n\n') -> [#comment, x.join('')],
+
+  kssComment = inlineComment,
+
+  nl = '\n',
+
+  other = nl,
+
+  any = kssComment | other
+
+}
