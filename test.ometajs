@@ -1,14 +1,15 @@
 ometa kssDivider {
 
-  inlineComment = seq('//') (~seq('\n') char)*:x seq('\n') -> x.join(''),
+  lineBreak = seq('\n'),
+  doubleLineBreak = lineBreak lineBreak,
+  lineEnd = lineBreak | end,
+  blockEnd = end | doubleLineBreak,
 
-  kssMarkup = inlineComment (~seq('\n\n') char)*:x seq('\n\n') -> [#kss, x.join('')],
+  inlineComment = seq('//') (~lineEnd char)*:x lineEnd -> x.join(''),
 
-  blockEnd = kssMarkup | end,
+  kssMarkup = inlineComment*:k -> [#kss, k.join('')],
 
-  nl = seq('\n\n'),
-
-  block = kssMarkup:k (~blockEnd char)*:c blockEnd -> [k, [#code, c.join('')]],
+  block = kssMarkup:k lineEnd -> [#block, k],
 
   any = (block)*
 
