@@ -4,6 +4,7 @@ ometa kssDivider {
   lineEnd = lineBreak | end,
 
   inlineCommentPrefix = seq('//'),
+  lineWithNoComments = (~inlineCommentPrefix char)* lineEnd,
 
   kssReferenceString = seq(' ')* seq('Styleguide ') digit '.' digit seq(' ')*,
 
@@ -11,11 +12,9 @@ ometa kssDivider {
 
   kssLastString = inlineCommentPrefix kssReferenceString lineEnd,
 
-  kssMarkup = ((inlineComment lineEnd)* kssLastString):k -> [#kss, k],
+  kssMarkup = ((~lineWithNoComments inlineComment lineEnd)* kssLastString):k -> [#kss, k],
 
-  codeLine = (~inlineComment ~lineEnd char)*,
-
-  code = (codeLine lineEnd | inlineComment lineEnd)*:c -> [#code, c.join('')],
+  code = (~kssMarkup char)*:c -> [#code, c.join('')],
 
   block = kssMarkup:k lineEnd* code:c -> [#block, k, c],
 
