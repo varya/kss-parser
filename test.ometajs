@@ -5,9 +5,13 @@ ometa kssDivider {
   lineEnd = lineBreak | end,
   blockEnd = end | doubleLineBreak,
 
-  inlineComment = seq('//') (~lineEnd char)*,
+  referenceNumber = seq(' Styleguide 1.0'),
 
-  kssMarkup = (inlineComment lineEnd)*:k -> [#kss, k.join('')],
+  inlineComment = seq('//') (~lineEnd ~referenceNumber char)*,
+
+  kssLastString = seq('//') referenceNumber lineEnd,
+
+  kssMarkup = ((inlineComment lineEnd)* kssLastString):k -> [#kss, k],
 
   codeLine = (~inlineComment ~lineEnd char)*,
 
