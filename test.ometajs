@@ -5,7 +5,7 @@ ometa kssDivider {
 
   inlineCommentPrefix = seq('//'),
 
-  kssReferenceString = seq(' Styleguide 1.0'),
+  kssReferenceString = seq(' ')* seq('Styleguide 1.0'),
 
   inlineComment = inlineCommentPrefix (~lineEnd ~kssReferenceString char)*,
 
