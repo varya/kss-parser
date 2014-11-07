@@ -15,7 +15,7 @@ ometa kssDivider {
 
   codeLine = (~inlineComment ~lineEnd char)*,
 
-  code = (codeLine lineEnd)*:c -> [#code, c.join('')],
+  code = (codeLine lineEnd | inlineComment lineEnd)*:c -> [#code, c.join('')],
 
   block = kssMarkup:k lineEnd* code:c -> [#block, k, c],
 
