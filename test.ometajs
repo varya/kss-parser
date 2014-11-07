@@ -1,15 +1,15 @@
 ometa kssDivider {
 
   lineBreak = seq('\n'),
-  doubleLineBreak = lineBreak lineBreak,
   lineEnd = lineBreak | end,
-  blockEnd = end | doubleLineBreak,
 
-  referenceNumber = seq(' Styleguide 1.0'),
+  inlineCommentPrefix = seq('//'),
 
-  inlineComment = seq('//') (~lineEnd ~referenceNumber char)*,
+  kssReferenceString = seq(' Styleguide 1.0'),
 
-  kssLastString = seq('//') referenceNumber lineEnd,
+  inlineComment = inlineCommentPrefix (~lineEnd ~kssReferenceString char)*,
+
+  kssLastString = inlineCommentPrefix kssReferenceString lineEnd,
 
   kssMarkup = ((inlineComment lineEnd)* kssLastString):k -> [#kss, k],
 
